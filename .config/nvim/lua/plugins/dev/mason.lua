@@ -18,7 +18,8 @@ return {
 
     -- LSP servers only for mason-lspconfig
     local lsp_servers = {
-      "pyright",
+      -- "pyright",
+      "basedpyright",
       "eslint", -- This is a linter, not an LSP. Consider none-ls or eslint.nvim
       "lua_ls",
       "marksman",

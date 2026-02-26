@@ -56,7 +56,14 @@ return {
             -- keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
 
             opts.desc = "Show line diagnostics"
-            keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
+            -- keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
+            keymap.set("n", "<leader>d", function ()
+                vim.diagnostic.open_float({
+                    border = "rounded",
+                    max_height = 25,
+                    max_width = 120
+                })
+            end, opts)
 
             opts.desc = "Go to previous diagnostic"
             keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
@@ -65,28 +72,55 @@ return {
             keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 
             opts.desc = "Show documentation for what is under cursor"
-            keymap.set("n", "K", vim.lsp.buf.hover, opts)
+            keymap.set("n", "K", function()
+                vim.lsp.buf.hover({
+                    border = "rounded",
+                    max_height = 25,
+                    max_width = 120
+                })
+            end, opts)
 
             opts.desc = "Restart LSP"
             keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
         end
 
-        -- Separate setup for pyright, allowing manual pythonPath configuration
-        vim.lsp.config("pyright", {
-            capabilities = capabilities,
-            on_attach = on_attach,
-            settings = {
-                python = {
-                    -- Manually set the path to your Python executable within the virtual environment.
-                    -- IMPORTANT: Replace "/path/to/your/project/.venv/bin/python" with your actual path.
-                    pythonPath = "/home/ruddy/git/ENSEEIHT-GCP-Spark-Cluster-Project/.venv/bin/python",
-                },
-            },
-        })
-        vim.lsp.enable("pyright")
+        -- -- Separate setup for pyright, allowing manual pythonPath configuration
+        -- vim.lsp.config("pyright", {
+        --     capabilities = capabilities,
+        --     on_attach = on_attach,
+        --     settings = {
+        --         python = {
+        --             -- Manually set the path to your Python executable within the virtual environment.
+        --             -- IMPORTANT: Replace "/path/to/your/project/.venv/bin/python" with your actual path.
+        --             pythonPath = "/home/ruddy/git/clean_dns/.venv/bin/python",
+        --         },
+        --     },
+        -- })
+        -- vim.lsp.enable("pyright")
+
+        -- vim.lsp.config("basedpyright", {
+        --     capabilities = capabilities,
+        --     on_attach = on_attach,
+        --     settings = {
+        --         basedpyright = {
+        --             analysis = {
+        --                 autoSearchPaths = true,
+        --                 -- useLibraryCodeForTypes = true,
+        --                 diagnosticMode = 'openFilesOnly',
+        --             },
+        --         },
+        --         python = {
+        --             -- Manually set the path to your Python executable within the virtual environment.
+        --             -- IMPORTANT: Replace "/path/to/your/project/.venv/bin/python" with your actual path.
+        --             -- venvPath = "/home/ruddy/git/clean_dns",
+        --             -- venv = ".venv",
+        --         },
+        --     },
+        -- })
+        -- vim.lsp.enable("basedpyright")
 
         -- Generic setup for other servers (pyright removed from this list)
-        local servers = {"ts_ls", "lua_ls", "marksman", "jdtls", "tailwindcss", "ocamllsp", "clangd"}
+        local servers = {"ts_ls", "lua_ls", "marksman", "jdtls", "tailwindcss", "ocamllsp", "clangd", "terraformls", "ansiblels", "basedpyright"}
 
         for _, server in ipairs(servers) do
             vim.lsp.config(server, {

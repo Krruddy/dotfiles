@@ -103,3 +103,6 @@ wdkill() {
     sudo systemctl stop waydroid-container
     echo "Waydroid fully stopped."
 }
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/vault vault
