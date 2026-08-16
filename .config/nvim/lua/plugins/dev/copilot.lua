@@ -1,11 +1,15 @@
 return {
     "github/copilot.vim",
+    enabled = true,
+    cmd = "Copilot",
+    event = "InsertEnter",
 
     config = function()
 
         local notify = require('notify')
         local vim = vim
 
+        vim.g.copilot_node_command = "node"
         -- Disable default tab mapping to avoid conflicts with CopilotChat
         vim.g.copilot_no_tab_map = true
         

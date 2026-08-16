@@ -18,17 +18,17 @@ open = [
 	{ run = 'xdg-open "$@"', desc = "Open" },
 ]
 
-[open]
-rules = [
-	{ mime = "text/*", use = "edit" },
-	{ mime = "video/*", use = "play" },
-	{ mime = "image/*", use = "open" },
-	{ mime = "application/pdf", use = "open" },
-    { mime = "inode/x-empty", use = "edit" }, # For empty files
-    { mime = "inode/empty", use = "edit" }, # For empty files
-	# { mime = "application/json", use = "edit" },
-	{ name = "*.json", use = "edit" },
-
-	# Multiple openers for a single rule
-	{ name = "*.html", use = [ "open", "edit" ] },
-]
+#[open]
+#rules = [
+#	{ mime = "text/*", use = "edit" },
+#	{ mime = "video/*", use = "play" },
+#	{ mime = "image/*", use = "open" },
+#	{ mime = "application/pdf", use = "open" },
+#    { mime = "inode/x-empty", use = "edit" }, # For empty files
+#    { mime = "inode/empty", use = "edit" }, # For empty files
+#	# { mime = "application/json", use = "edit" },
+#	# { name = "*.json", use = "edit" },
+#
+#	# Multiple openers for a single rule
+#	{ name = "*.html", use = [ "open", "edit" ] },
+#]

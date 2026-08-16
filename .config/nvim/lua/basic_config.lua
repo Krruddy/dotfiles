@@ -1,6 +1,6 @@
 vim = vim
 vim.g.mapleader = " "
-vim.g.netrw__liststyle = 4
+vim.g.netrw__liststyle = 2
 
 vim.wo.number = true
 vim.wo.relativenumber = true
@@ -8,9 +8,9 @@ vim.wo.relativenumber = true
 vim.o.title = true
 vim.o.syntax = "ON"
 vim.o.compatible = false
-vim.o.tabstop = 4
-vim.o.softtabstop = 4
-vim.o.shiftwidth = 4
+vim.o.tabstop = 2
+vim.o.softtabstop = 2
+vim.o.shiftwidth = 2
 vim.o.scrolloff = 15
 vim.o.sidescrolloff = 15
 
@@ -23,7 +23,7 @@ vim.opt.ignorecase = true
 -- If search pattern contains uppercase letters, make it case sensitive
 vim.opt.smartcase = true
 
-vim.opt_local.conceallevel = 0
+vim.opt_local.conceallevel = 1
 
 vim.opt.termguicolors = true
 

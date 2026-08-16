@@ -2,6 +2,7 @@ return {
     "epwalsh/obsidian.nvim",
     version = "*",  -- recommended, use latest release instead of latest commit
     lazy = true,
+    enabled = true,
     ft = "markdown",
     -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
     -- event = {
@@ -22,6 +23,10 @@ return {
                 {
                     name = "School",
                     path = "~/Documents/ENSEEIHT",
+                },
+                {
+                    name = "Omniscientia",
+                    path = "~/Documents/Omniscientia",
                 },
                 --{
                 --    name = "Research",
@@ -122,7 +127,9 @@ return {
         vim.keymap.set('n', '<leader>ol', '<cmd>ObsidianLinks<CR>', { desc = 'List links in current buffer' })
         vim.keymap.set('n', '<leader>ow', '<cmd>ObsidianWorkspace<CR>', { desc = 'Switch to another workspace' })
         vim.keymap.set('n', '<leader>ob', '<cmd>ObsidianBacklinks<CR>', { desc = 'List references to current buffer' })
-        -- vim.keymap.set('n', '<leader>ff', '<cmd>ObsidianQuickSwitch<CR>', { desc = 'Find note in vault' })
+        vim.keymap.set('n', '<leader>of', '<cmd>ObsidianQuickSwitch<CR>', { desc = 'Find note in vault' })
+        vim.keymap.set('n', '<leader>os', '<cmd>ObsidianSearch<CR>', { desc = 'Search note in vault' })
+        vim.keymap.set('n', '<leader>op', '<cmd>ObsidianPasteImg<CR>', { desc = 'Paste an image' })
 
     end,
 }

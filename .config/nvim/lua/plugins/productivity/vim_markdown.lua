@@ -1,5 +1,6 @@
 return {
     'preservim/vim-markdown',
+    enabled = true,
     config = function()
         -- require('vim_markdown').setup({})
         vim.opt.conceallevel = 2

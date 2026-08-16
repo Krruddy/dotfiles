@@ -36,9 +36,9 @@ return {
             on_attach = my_on_attach,
             actions = {
                 open_file = {
-                    quit_on_open = false, -- Keep the tree open after opening a file
+                    -- quit_on_open = false, -- Keep the tree open after opening a file
                 }
-            }
+            },
         })
         local nvim_tree = require("nvim-tree.api")
 

@@ -2,10 +2,18 @@
 # 1. Environment & Path
 # ==========================================
 export ZSH="$HOME/.oh-my-zsh"
+export XDG_CONFIG_HOME="$HOME/.config"
 export LANG=en_US.UTF-8
 export EDITOR='nvim' 
 export PATH=~/.npm-global/bin:$PATH # Custom NPM Global Path so that I don't need sudo for global installs
 export PRINTER='Canon_G3520'
+export PATH="$HOME/.local/bin:$PATH"
+export MANPAGER="env NVIM_MAN=1 nvim +Man!"
+export ALIAS_PATH="~/.oh-my-zsh/custom/aliases.zsh"
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
+export GPG_TTY=$(tty)
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
 #export GEMINI_API_KEY="AIzaSyANY6TlMrRbHELKanhcGxgBfMrztw80ptc"
 #export AVANTE_GEMINI_API_KEY="AIzaSyC4hMVyMlT5osTwwhA1MI2pqX0xabaGwRg"
 #export AVANTE_DEEPSEEK_API_KEY="sk-c6dfa20e6eae4c7689387bb0325e4a97"
@@ -95,14 +103,12 @@ function y() {
     rm -f -- "$tmp"
 }
 
-# Waydroid Stop Function
-wdkill() {
-    echo "Stopping Waydroid Session..."
-    waydroid session stop
-    echo "Stopping Waydroid Container..."
-    sudo systemctl stop waydroid-container
-    echo "Waydroid fully stopped."
-}
-
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/bin/vault vault
+export LIBVIRT_DEFAULT_URI="qemu:///system"
+fgd() {
+    fzf --bind "start:reload:git status --short | grep '^ M' | cut -d' ' -f 3" \
+        --preview 'git diff --color {}' \
+        --multi \
+        --bind 'enter:become:git add {+}'
+}

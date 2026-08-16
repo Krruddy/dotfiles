@@ -33,7 +33,8 @@ map("n", "<S-Down>", ":resize +2<CR>", { desc = 'Resize window' })
 map("n", "<S-Left>", ":vertical resize -2<CR>", { desc = 'Resize window' })
 map("n", "<S-Right>", ":vertical resize +2<CR>", { desc = 'Resize window' })
 
+-- Not needed because of bufferline
 -- Buffers
-map("n", "<TAB>", ":bn<CR>", { desc = 'Next buffer' })
-map("n", "<S-TAB>", ":bp<CR>", { desc = 'Previous buffer' })
-map("n", "<leader>bd", ":bd<CR>", { desc = 'Close buffer' })
+-- map("n", "<TAB>", ":bn<CR>", { desc = 'Next buffer' })
+-- map("n", "<S-TAB>", ":bp<CR>", { desc = 'Previous buffer' })
+-- map("n", "<leader>bd", ":bd<CR>", { desc = 'Close buffer' })
