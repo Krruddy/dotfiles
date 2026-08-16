@@ -1,0 +1,186 @@
+" -----------------------------------------------------------------------------
+"  Gemini Code Assist: Adapted NeoVim Configuration for IdeaVim
+" -----------------------------------------------------------------------------
+"
+"  This file contains settings and mappings translated from your NeoVim
+"  setup to be used with the IdeaVim plugin in IntelliJ IDEA.
+"
+"  To apply changes after editing this file, restart IntelliJ or create
+"  a mapping to reload it, like so:
+"  nnoremap <leader>vr :source ~/.ideavimrc<CR>
+"
+" -----------------------------------------------------------------------------
+
+
+" --- General Settings ---
+
+" Set the leader key to space
+let mapleader = " "
+
+" Enable relative line numbers
+set relativenumber
+
+" Set indentation rules
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+
+" Set scrolling offset
+set scrolloff=15
+set sidescrolloff=15
+
+" Configure search behavior
+set ignorecase
+set smartcase
+
+" --- Key Mappings ---
+
+" Save the current file (maps to IntelliJ's 'Save All' action)
+nnoremap <leader>ss :action SaveAll<CR>
+
+" Clear search highlights
+nnoremap <leader>h :noh<CR>
+
+" Keep visual selection after indenting
+vnoremap < <gv
+vnoremap > >gv
+
+" Switch between editor tabs (IntelliJ's equivalent of buffers)
+nnoremap <TAB> :action NextTab<CR>
+nnoremap <S-TAB> :action PreviousTab<CR>
+
+" Close the current editor tab
+nnoremap <leader>bd :action CloseEditor<CR>
+
+" --- Mappings Adapted from NeoVim Config (Telescope Equivalents) ---
+
+" Find Files (Ctrl+Shift+N)
+nnoremap <leader>ff :action GotoFile<CR>
+
+" Find in Files / Live Grep (Ctrl+Shift+F)
+nnoremap <leader>fg :action FindInPath<CR>
+
+" Show Recent Files (Ctrl+E)
+nnoremap <leader>fb :action RecentFiles<CR>
+nnoremap <C-b> :action RecentFiles<CR>
+
+nnoremap <C-t> :action ActivateTerminalToolWindow<CR>
+
+nnoremap <leader>gg :action ToggleDistractionFreeMode<CR>
+nnoremap <leader>gh :action ToggleZenMode<CR>
+
+
+
+- Clipboard Integration ---
+" Use the system clipboard for all yank/put operations
+set clipboard=unnamedplus
+
+" Find Symbol in File (Ctrl+F12)
+" nnoremap <leader>fz :action FileStructurePopup<CR>
+" nnoremap <C-f> :action FileStructurePopup<CR>
+"
+" " Show Git Log
+" nnoremap <leader>fc :action Vcs.ShowTabbedLog<CR>
+"
+"
+" " --- Mappings Adapted from NeoVim Config (LSP & Code Navigation) ---
+"
+" " Go to Declaration (Ctrl+B)
+" nnoremap gD :action GotoDeclaration<CR>
+"
+" " Go to Definition (Ctrl+Click) - Often same as Declaration in IntelliJ
+" nnoremap gd :action GotoDeclaration<CR>
+"
+" " Go to Implementation (Ctrl+Alt+B)
+" nnoremap gi :action GotoImplementation<C
+"
+" " Go to Type Definition
+" nnoremap gt :action GotoTypeDeclaration<CR>
+"
+" " Find Usages (Alt+F7)
+" nnoremap gR :action FindUsages<CR>
+"
+" " Show Quick Documentation (Ctrl+Q)
+" nnoremap K :action QuickJavaDoc<CR>
+"
+" " Show Intention Actions / Quick Fixes (Alt+Enter)
+" nnoremap <leader>ca :action ShowIntentionActions<CR>
+" vnoremap <leader>ca :action ShowIntentionActions<CR>
+"
+" " Rename (Shift+F6)
+" nnoremap <leader>rn :action RenameElement<CR>
+"
+" " Show Problems in Current File
+" nnoremap <leader>d :action ShowErrorDescription<CR>
+"
+" " Go to Next/Previous Error (F2 / Shift+F2)
+" nnoremap [d :action GotoPreviousError<CR>
+" nnoremap ]d :action GotoNextError<CR>
+"
+"
+" " --- Mappings Adapted from NeoVim Config (Debugging - DAP) ---
+"
+" " Toggle Breakpoint (Ctrl+F8)
+" nnoremap <leader>db :action ToggleLineBreakpoint<CR>
+"
+" " Start/Continue Debugging (F9)
+" nnoremap <leader>dc :action Resume<CR>
+"
+" " Step Into (F7)
+" nnoremap <leader>di :action StepInto<CR>
+"
+" " Step Over (F8)
+" nnoremap <leader>do :action StepOver<CR>
+"
+" " Step Out (Shift+F8)
+" nnoremap <leader>dO :action StepOut<CR>
+"
+" " Stop/Terminate Process (Ctrl+F2)
+" nnoremap <leader>dt :action Stop<CR>
+"
+"
+" " --- Mappings Adapted from NeoVim Config (UI & Tool Windows) ---
+"
+" " Toggle Project View (Alt+1)
+" nnoremap <S-t> :action ToggleProjectView<CR>
+"
+" " Focus Project View
+" nnoremap <leader>tt :action ProjectView<CR>
+"
+" " Toggle Terminal (Alt+F12)
+" nnoremap <C-t> :action ToggleTerminal<CR>
+"
+"
+" " --- Mappings Adapted from NeoVim Config (Testing - Neotest) ---
+"
+" " Run context configuration (e.g., nearest test method/class)
+" nnoremap <leader>tt :action Run<CR>
+"
+" " Run file context configuration
+" nnoremap <leader>tf :action RunClass<CR>
+"
+" " Run last action again
+" nnoremap <leader>tl :action RunAgain<CR>
+"
+" " Debug context configuration (e.g., nearest test)
+" nnoremap <leader>td :action Debug<CR>
+"
+" " Activate the Run Tool Window
+" nnoremap <leader>to :action ActivateRunToolWindow<CR>
+"
+"
+" " --- Mappings Adapted from NeoVim Config (Java/JDTLS) ---
+"
+" " Organize Imports (Ctrl+Alt+O)
+" nnoremap <leader>jo :action OptimizeImports<CR>
+"
+" " Extract Variable (Ctrl+Alt+V)
+" vnoremap <leader>jev :action ExtractVariable<CR>
+"
+" " Extract Method (Ctrl+Alt+M)
+" vnoremap <leader>jem :action ExtractMethod<CR>
+"
+" " Go to Super Method/Class
+" nnoremap gS :action GotoSuperMethod<CR>
