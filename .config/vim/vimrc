@@ -104,9 +104,8 @@ augroup AnsibleNative
     autocmd FileType yaml nnoremap gD :grep '^\s*<cword>:' .<CR>:copen<CR>
     autocmd FileType yaml command! -nargs=1 GrepDir execute 'vimgrep ' . <q-args> . ' ' . g:project_dir . '/**'
     "ansible-lint --offline -p --nocolor -q -q
-    autocmd FileType yaml setlocal makeprg=ansible-lint\ --format\ pep8\ -q\ -q\ --nocolor
-    "ansible-lint --fix roles/vmalert_stack_deploy/defaults/main.yml --format pep8 2>/dev/null
-    autocmd FileType yaml setlocal grepformat=%f:%l:\ %c:\ %m  
+    autocmd FileType yaml setlocal makeprg=ansible-lint\ --parseable\ -q\ -q\ --nocolor
+    autocmd FileType yaml setlocal errorformat=%f:%l:\ %m
 
 augroup END
 autocmd FileType lfrc set filetype=conf
@@ -161,7 +160,7 @@ set showcmd
 set laststatus=2
 set wildmenu
 set wildmode=longest:full,full
-set scrolloff=8
+set scrolloff=16
 
 "" ---------- Behavior ----------
 set hidden                   " keep buffers alive in background
@@ -185,6 +184,7 @@ set smartindent
 "" ---------- File navigation ----------
 "set path+=**                " :find searches recursively from cwd
 
+set splitright
 " ---------- Completion ----------
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c            " don't show completion messages
@@ -216,6 +216,7 @@ function! BDeleteKeepSplit()
 endfunction
 
 nnoremap <leader>q :call BDeleteKeepSplit()<CR> 
+"nnoremap <leader>q :hide<CR> 
 nnoremap <leader>Q :bdelete<CR>
 "" ---------- Handy mappings ----------
 nnoremap <S-q> :nohlsearch<CR>
@@ -227,7 +228,7 @@ let g:netrw_winsize = 20
 nnoremap <S-t> :Lexplore<CR>
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
-nnoremap <leader>g :grep -r  .<Left><Left>
+nnoremap <leader>gg :Git<CR><C-w>L
 nnoremap <leader>m :make<CR>
 nnoremap <leader>c :copen<CR>
 nnoremap <leader>b :ls<CR>:b<Space>
@@ -250,6 +251,7 @@ nnoremap ]b :bnext<CR>
 
 "" Quickly edit/reload vimrc
 nnoremap <leader>ev :edit $MYVIMRC<CR>
+nnoremap <leader>ez :edit $HOME/.zshrc<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " FZF
