@@ -1,0 +1,35 @@
+[Added Associations]
+application/x-extension-htm=zen.desktop
+application/x-extension-html=zen.desktop
+application/x-extension-shtml=zen.desktop
+application/x-extension-xht=zen.desktop
+application/x-extension-xhtml=zen.desktop
+application/xhtml+xml=zen.desktop
+text/html=zen.desktop
+video/mp4=vlc-2.desktop;
+x-scheme-handler/chrome=zen.desktop
+x-scheme-handler/http=zen.desktop
+x-scheme-handler/https=zen.desktop
+video/x-matroska=vlc.desktop;mpv.desktop;
+image/png=org.gnome.eog.desktop;
+application/x-x509-ca-cert=org.gnome.seahorse.Application.desktop;
+
+[Default Applications]
+application/pdf=zen.desktop
+x-scheme-handler/mailto=zen.desktop
+application/x-extension-htm=zen.desktop
+application/x-extension-html=zen.desktop
+application/x-extension-shtml=zen.desktop
+application/x-extension-xht=zen.desktop
+application/x-extension-xhtml=zen.desktop
+application/xhtml+xml=zen.desktop
+text/html=zen.desktop
+video/mp4=vlc-2.desktop;
+x-scheme-handler/chrome=zen.desktop
+x-scheme-handler/http=zen.desktop
+x-scheme-handler/https=zen.desktop
+x-scheme-handler/jetbrains=jetbrainsd.desktop
+x-scheme-handler/nxm=com.nexusmods.app.desktop
+video/x-matroska=mpv.desktop
+image/png=org.gnome.eog.desktop
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop
