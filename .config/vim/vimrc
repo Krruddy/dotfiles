@@ -1,0 +1,304 @@
+"" ---------- Leader ----------
+let mapleader = " "
+
+"" ====================================================================
+"" Abbreviations
+"" ====================================================================
+augroup AnsibleAbbrev
+    autocmd!
+    "autocmd FileType yaml iabbrev task - name:<CR><Left><Left>  ansible.builtin.
+    autocmd FileType yaml iabbrev when when: "{{  }}"<Left><Left><Left>
+    "autocmd FileType yaml iabbrev reg register:<Space>
+augroup END
+"" ====================================================================
+"" Role Navigation
+"" ====================================================================
+function! JumpToRoleFile(subdir)
+  let l:path = expand('%:p')
+  let l:role_root = matchstr(l:path, '.*\/roles\/[^\/]\+\/')
+  if empty(l:role_root)
+    echo "Not inside a role"
+    return
+  endif
+  let l:target = l:role_root . a:subdir . '/main.yml'
+  if filereadable(l:target)
+    execute 'edit ' . l:target
+  else
+    echo "Not found: " . l:target
+  endif
+endfunction
+
+"nnoremap <leader>rl :!ls -1 %:h/..<CR>
+"nnoremap <leader>rl :echo join(map(glob('./roles/*', 0, 1), 'fnamemodify(v:val, ":t")'), "\n")<CR>
+nnoremap <leader>rl :echo join(map(glob(matchstr(expand('%:p'), '.*/roles/[^/]\+') . '/*', 0, 1), 'fnamemodify(v:val, ":t")'), "\n")<CR>
+nnoremap <leader>rt :call JumpToRoleFile('tasks')<CR>
+nnoremap <leader>rh :call JumpToRoleFile('handlers')<CR>
+nnoremap <leader>rd :call JumpToRoleFile('defaults')<CR>
+nnoremap <leader>rv :call JumpToRoleFile('vars')<CR>
+nnoremap <leader>rm :call JumpToRoleFile('meta')<CR>
+
+"" ====================================================================
+"" Folding
+"" ====================================================================
+function! YamlFolds()
+  let previous_level = indent(prevnonblank(v:lnum - 1)) / &shiftwidth
+  let current_level = indent(v:lnum) / &shiftwidth
+  let next_level = indent(nextnonblank(v:lnum + 1)) / &shiftwidth
+
+  if getline(v:lnum + 1) =~ '^\s*$'
+    return "="
+
+  elseif current_level < next_level
+    return next_level
+
+  elseif current_level > next_level
+    return ('s' . (current_level - next_level))
+
+  elseif current_level == previous_level
+    return "="
+
+  endif
+
+  return next_level
+endfunction
+
+
+if executable('rg')
+   set grepprg=rg\ --vimgrep\ --smart-case
+   set grepformat=%f:%l:%c:%m
+endif
+
+let g:project_dir = '~/docker-swarm-monitoring/ansible'
+
+
+function! LoadRole(fname)
+    let roles = "./roles/"
+    let relativeRolePath = l:roles . a:fname . "/tasks/main.yml"
+    let absoluteRolePath = g:project_dir . '/' . l:roles . a:fname . "/tasks/main.yml"
+
+    if filereadable(l:relativeRolePath)
+        return l:relativeRolePath
+    elseif filereadable(l:absoluteRolePath)
+        return l:absoluteRolePath
+    else
+        return l:roles . a:fname
+    endif
+endfunction
+
+"" ====================================================================
+"" NATIVE FILETYPE & PATH ROUTING
+"" ====================================================================
+augroup AnsibleNative
+    autocmd!
+    " Force filetype=yaml for extensions vim doesn't auto-detect
+    autocmd BufRead,BufNewFile *.yml.j2,*.yaml.j2,.ansible-lint,.yamllint setlocal filetype=yaml
+
+    " YAML-specific behavior
+    autocmd FileType yaml setlocal keywordprg=ansible-doc
+    autocmd FileType yaml setlocal suffixesadd=.yml,.yaml
+    autocmd FileType yaml setlocal includeexpr=LoadRole(v:fname)
+    autocmd FileType yaml setlocal iskeyword-=- iskeyword-=. iskeyword-=/
+    autocmd FileType yaml setlocal foldmethod=expr foldexpr=YamlFolds() foldlevel=10
+    autocmd FileType yaml setlocal path+=./group_vars/**,./inventory/**,./host_vars/**,./vars/**
+    autocmd FileType yaml execute 'setlocal path+=.,' . expand('%:p:h') . '/../templates'
+    autocmd FileType yaml nnoremap gD :grep '^\s*<cword>:' .<CR>:copen<CR>
+    autocmd FileType yaml command! -nargs=1 GrepDir execute 'vimgrep ' . <q-args> . ' ' . g:project_dir . '/**'
+    "ansible-lint --offline -p --nocolor -q -q
+    autocmd FileType yaml setlocal makeprg=ansible-lint\ --format\ pep8\ -q\ -q\ --nocolor
+    "ansible-lint --fix roles/vmalert_stack_deploy/defaults/main.yml --format pep8 2>/dev/null
+    autocmd FileType yaml setlocal grepformat=%f:%l:\ %c:\ %m  
+
+augroup END
+autocmd FileType lfrc set filetype=conf
+autocmd FileType lfrc setlocal foldmethod=marker foldmarker={{,}}
+
+augroup Help
+    autocmd!
+    autocmd FileType help nnoremap <leader>q :bd<CR> 
+augroup END
+" ====================================================================
+" ASYNCHRONOUS LINT ENGINE (ALE) INTERFACE
+" ====================================================================
+packadd! ale
+" Explicitly bind system-level binaries to your file type
+let g:ale_linters = {
+\   'yaml': ['ansible-lint', 'yamllint'],
+\}
+
+" Format and strip errors cleanly on save using standard CLI features
+" They are defined here `/usr/share/vim-ale/autoload/ale/fixers/generic.vim`
+let g:ale_fixers = {
+\   'yaml': ['remove_trailing_lines', 'trim_whitespace'],
+\   'json': ['remove_trailing_lines', 'trim_whitespace', 'yq'],
+\}
+let g:ale_fix_on_save = 1
+
+" High visibility gutter decorations
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚠'
+let g:ale_echo_msg_format = '[%linter%] %s [%code%]'
+let g:ale_virtualtext_cursor = 'all'    " show error text next to cursor line
+let g:ale_echo_cursor = 0                    " echo error to command line on cursor move
+
+" Performance Tuning for Servers: Lint only on file write, not while actively typing
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
+
+" Navigation keys for jumping between your ansible-lint warnings
+nmap <silent> [w <Plug>(ale_previous)
+nmap <silent> ]w <Plug>(ale_next)
+
+"" ---------- Core ----------
+set nocompatible
+syntax on
+filetype plugin indent on
+
+"" ---------- UI ----------
+set number relativenumber
+set ruler
+set showcmd
+set laststatus=2
+set wildmenu
+set wildmode=longest:full,full
+set scrolloff=8
+
+"" ---------- Behavior ----------
+set hidden                   " keep buffers alive in background
+set autoread                " reload files changed outside vim
+set backspace=indent,eol,start
+
+"" ---------- Search ----------
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+"
+"" ---------- Indentation defaults ----------
+set expandtab
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set autoindent
+set smartindent
+"
+"" ---------- File navigation ----------
+"set path+=**                " :find searches recursively from cwd
+
+" ---------- Completion ----------
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c            " don't show completion messages
+"
+"" ---------- Backups ----------
+set nobackup
+set nowritebackup
+set noswapfile
+set undofile
+set undodir=~/.vim/undo
+silent !mkdir -p ~/.vim/undo
+
+" Delete buffer without closing the split layout
+function! BDeleteKeepSplit()
+  let l:current = bufnr('%')
+  let l:alternate = bufnr('#')
+
+  if buflisted(l:alternate)
+    buffer #
+  else
+    bnext
+  endif
+
+  if bufnr('%') != l:current
+    execute 'bdelete! ' . l:current
+  else
+    execute 'bdelete'
+  endif
+endfunction
+
+nnoremap <leader>q :call BDeleteKeepSplit()<CR> 
+nnoremap <leader>Q :bdelete<CR>
+"" ---------- Handy mappings ----------
+nnoremap <S-q> :nohlsearch<CR>
+nnoremap <leader>h :nohlsearch<CR>
+nnoremap <leader>ss :w<CR>
+let g:netrw_fastbrowse = 0
+let g:netrw_liststyle = 3
+let g:netrw_winsize = 20
+nnoremap <S-t> :Lexplore<CR>
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab> :bprevious<CR>
+nnoremap <leader>g :grep -r  .<Left><Left>
+nnoremap <leader>m :make<CR>
+nnoremap <leader>c :copen<CR>
+nnoremap <leader>b :ls<CR>:b<Space>
+
+nnoremap <leader>* :grep <C-r><C-w> .<CR>:copen<CR>
+vnoremap <leader>* y:grep <C-r>" .<CR>:copen<CR>
+" Quickfix
+nnoremap [q :cprevious<CR>
+nnoremap ]q :cnext<CR>
+nnoremap [Q :cfirst<CR>
+nnoremap ]Q :clast<CR>
+
+" Location list (per-window equivalent of quickfix)
+nnoremap [l :lprevious<CR>
+nnoremap ]l :lnext<CR>
+
+" Buffers
+nnoremap [b :bprevious<CR>
+nnoremap ]b :bnext<CR>
+
+"" Quickly edit/reload vimrc
+nnoremap <leader>ev :edit $MYVIMRC<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
+" FZF
+nnoremap <leader>ff :Files<CR>
+nnoremap <leader>fb :Buffers<CR>
+nnoremap <leader>fg :RG<CR>
+nnoremap <leader>fr :registers<CR>
+
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+"" unicode symbols
+"let g:airline_left_sep = '»'
+"let g:airline_left_sep = '▶'
+"let g:airline_right_sep = '«'
+"let g:airline_right_sep = '◀'
+"let g:airline_symbols.crypt = '🔒'
+"let g:airline_symbols.linenr = '☰'
+"let g:airline_symbols.linenr = '␊'
+"let g:airline_symbols.linenr = '␤'
+"let g:airline_symbols.linenr = '¶'
+"let g:airline_symbols.maxlinenr = ''
+"let g:airline_symbols.maxlinenr = '㏑'
+"let g:airline_symbols.branch = '⎇'
+"let g:airline_symbols.paste = 'ρ'
+"let g:airline_symbols.paste = 'Þ'
+"let g:airline_symbols.paste = '∥'
+"let g:airline_symbols.spell = 'Ꞩ'
+"let g:airline_symbols.notexists = 'Ɇ'
+"let g:airline_symbols.whitespace = 'Ξ'
+
+" powerline symbols
+let g:airline_left_sep = ''
+"let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+"let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.dirty='⚡'
+
+" old vim-powerline symbols
+"let g:airline_left_sep = '⮀'
+"let g:airline_left_alt_sep = '⮁'
+"let g:airline_right_sep = '⮂'
+"let g:airline_right_alt_sep = '⮃'
+"let g:airline_symbols.branch = '⭠'
+"let g:airline_symbols.readonly = '⭤'
+"let g:airline_symbols.linenr = '⭡'
