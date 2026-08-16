@@ -118,40 +118,25 @@ augroup Help
     autocmd!
     autocmd FileType help nnoremap <leader>q :bd<CR> 
 augroup END
-" ====================================================================
-" ASYNCHRONOUS LINT ENGINE (ALE) INTERFACE
-" ====================================================================
-"set packpath+=~/.vim,/var/lib/vim/addons,/etc/vim,/usr/share/vim/vimfiles,/usr/share/vim/vim91,/usr/share/vim/vimfiles/after,/etc/vim/after,/var/lib/vim/addons/after,~/.vim/after
-"set runtimepath^=~/.config/vim
-"set runtimepath+=~/.config/vim/after
-"set packpath^=~/.config/vim
-"set packpath+=~/.config/vim/
 
 " Set custom runtime path if using ~/.config/vim instead of ~/.vim
 set runtimepath^=~/.config/vim
 set runtimepath+=~/.config/vim/after
-let &packpath = &runtimepath
+set packpath+=~/.config/vim/plugged
 
 " ==============================================================================
 " VIM-PLUG AUTO-INSTALL
 " ==============================================================================
-let data_dir = expand('~/.config/vim')
-if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
+"let data_dir = expand('~/.config/vim')
+"if empty(glob(data_dir . '/autoload/plug.vim'))
+"  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+"  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+"endif
 call plug#begin('~/.config/vim/plugged')
-
-" Example plugins:
 Plug 'tpope/vim-fugitive'           " Git integration
 Plug 'dense-analysis/ale'           " ALE integration
-"Plug 'preservim/nerdtree'           " File explorer
-"Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' } " Post-install hook example
-
 call plug#end()
 
-packadd! ale
 " Explicitly bind system-level binaries to your file type
 let g:ale_linters = {
 \   'yaml': ['ansible-lint', 'yamllint'],
