@@ -9,7 +9,7 @@ export PATH=~/.npm-global/bin:$PATH # Custom NPM Global Path so that I don't nee
 export PRINTER='Canon_G3520'
 export PATH="$HOME/.local/bin:$PATH"
 export MANPAGER="env NVIM_MAN=1 nvim +Man!"
-export ALIAS_PATH="~/.oh-my-zsh/custom/aliases.zsh"
+export ALIAS_PATH="~/.aliases.zsh"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
 export GPG_TTY=$(tty)
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
