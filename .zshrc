@@ -17,9 +17,7 @@ export STARSHIP_CONFIG=~/.config/starship/starship.toml
 # ==========================================
 # 2. Oh My Zsh Config
 # ==========================================
-# Starship will likely take over the prompt, but we keep this as fallback
-#ZSH_THEME="robbyrussell" 
-#
+
 plugins=(
 #  vi-mode # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode
 #  git # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git ; I never use the aliases
@@ -38,52 +36,27 @@ plugins=(
 # 3. Tool Initialization
 # ==========================================
 
-# Aliases
-source $ALIAS_PATH
-
 # Oh My Zsh
 source $ZSH/oh-my-zsh.sh
+
+# Aliases
+source $ALIAS_PATH
 
 # Starship (Prompt)
 eval "$(starship init zsh)"
 
+# Pass (Proton Pass CLI)
 eval "$(pass-cli completions zsh)"
-
-# OCaml
-#eval $(opam env)
 
 # NVM (Node Version Manager)
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-## #
-## ## FNM (Fast Node Manager)
-## #FNM_PATH="/home/ruddy/.local/share/fnm"
-## ## fnm
-## #if [ -d "$FNM_PATH" ]; then
-## #  export PATH="$FNM_PATH:$PATH"
-## #  eval "`fnm env`"
-## #fi
-## #eval "$(fnm env --use-on-cd --shell zsh)"
-## 
-## # FNM (Fast Node Manager)
-## # 1. Add to PATH (Only needed if you didn't install via Pacman)
-## if [ -d "$HOME/.local/share/fnm" ]; then
-##   export PATH="$HOME/.local/share/fnm:$PATH"
-## fi
-## 
-## # 2. Initialize (Just once, with the cd hook)
-## eval "$(fnm env --use-on-cd --shell zsh)"
-
-# Gnome Keyring (Currently Disabled)
-# if ! pgrep -x -f gnome-keyring-daemon >/dev/null; then
-#   eval "$(gnome-keyring-daemon --start --components=secrets,ssh)"
-#   export SSH_AUTH_SOCK
-# fi
 
 # ==========================================
 # 4. Custom Functions & Aliases
 # ==========================================
+#
 # Yazi (File Manager with CD support)
 function y() {
     local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -93,9 +66,6 @@ function y() {
     rm -f -- "$tmp"
 }
 
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/bin/vault vault
-export LIBVIRT_DEFAULT_URI="qemu:///system"
 fgd() {
     fzf --bind "start:reload:git status --short | grep '^ M' | cut -d' ' -f 3" \
         --preview 'git diff --color {}' \
@@ -103,10 +73,7 @@ fgd() {
         --bind 'enter:become:git add {+}'
 }
 
-
-
 # ==========================================
 # 5. Fastfetch (System Info)
 # ==========================================
-
 fastfetch

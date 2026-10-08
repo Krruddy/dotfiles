@@ -3,7 +3,7 @@
 _='sudo '
 alias alias_mod='nv ~/.oh-my-zsh/custom/aliases.zsh'
 
-alias z='cd'
+#alias z='cd'
 alias ls='lsd'
 alias l='ls -l'
 alias la='ls -a'
@@ -26,3 +26,5 @@ alias n="nv"
 alias b="bat"
 alias n7="cd ~/Documents/ENSEEIHT/; nv"
 alias nvp="cd ~/.config/nvim/lua/plugins/ && nvim"
+alias hypreboot="hyprshutdown -t 'Restarting...' --post-cmd 'reboot'"
+alias hyprshutdown-now="hyprshutdown -t 'Restarting...' --post-cmd 'shutdown now'"

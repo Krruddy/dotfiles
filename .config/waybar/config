@@ -33,7 +33,10 @@
         "on-scroll-down": "playerctl volume 0.05-"
 },
         "hyprland/workspaces": {
-            "format": "{icon}",
+            "format": "{name}",
+            "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({workspace=\"e+1\"})' ",
+            "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({workspace=\"e-1\"})' ",
+            "on-click": "notify-send -u low -t 2000 \"{address}\" \"`{address}`\" ",
             "format-icons": {
                 "active": "",
                 "default": "",
@@ -42,6 +45,9 @@
             "persistent-workspaces": {
                 "*": [ 1,2,3,4,5 ]
             }
+        },
+        "hyprland/window": {
+            "separate-outputs": true
         },
         "custom/notification": {
             "tooltip": false,

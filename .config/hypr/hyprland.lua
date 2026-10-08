@@ -180,13 +180,13 @@ hl.config({
     follow_mouse = 1,
 
     touchpad = {
-      natural_scroll = true,
+      natural_scroll = false,
     },
   },
 })
 
 -- gestures
-hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
+-- hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
 
 -- 4k monitor blur fix
 hl.config({
@@ -219,6 +219,9 @@ hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(screenLocker))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("killall -SIGUSR1 waybar"))
 hl.bind(mainMod .. " + F9", hl.dsp.exec_cmd("~/.config/hypr/Scripts/toggle_res.sh"))
+-- hl.bind(mainMod .. " + F5", hl.dsp.exec_cmd("hyprctl keyword monitor DP-4,disable"))
+-- hl.bind(mainMod .. " + F6", hl.dsp.exec_cmd("hyprctl keyword monitor DP-4,3840x2160@160,0x0,1.5"))
+
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t -sw"))
 
 -- Move focus with mainMod + arrow keys
@@ -270,8 +273,8 @@ hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
-hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { drag = true })
-hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { drag = true })
+hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
+hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Laptop multimedia keys for volume and LCD brightness
 hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
