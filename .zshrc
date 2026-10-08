@@ -2,65 +2,55 @@
 # 1. Environment & Path
 # ==========================================
 export ZSH="$HOME/.oh-my-zsh"
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 export XDG_CONFIG_HOME="$HOME/.config"
 export LANG=en_US.UTF-8
 export EDITOR='nvim' 
-export PATH=~/.npm-global/bin:$PATH # Custom NPM Global Path so that I don't need sudo for global installs
-export PRINTER='Canon_G3520'
-export PATH="$HOME/.local/bin:$PATH"
-export MANPAGER="env NVIM_MAN=1 nvim +Man!"
-export ALIAS_PATH="~/.aliases.zsh"
+export ALIAS_PATH="$HOME/.aliases.zsh"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
 export GPG_TTY=$(tty)
-export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+export PRINTER='Canon_G3520'
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+#export MANPAGER="env NVIM_MAN=1 nvim +Man!"
 
-#export GEMINI_API_KEY="AIzaSyANY6TlMrRbHELKanhcGxgBfMrztw80ptc"
-#export AVANTE_GEMINI_API_KEY="AIzaSyC4hMVyMlT5osTwwhA1MI2pqX0xabaGwRg"
-#export AVANTE_DEEPSEEK_API_KEY="sk-c6dfa20e6eae4c7689387bb0325e4a97"
-
-#export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
-#export PATH=$JAVA_HOME/bin:$PATH
-#export HADOOP_HOME=/home/ruddy/workspace/hadoop-2.7.1
-#export PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH
-#export SPARK_HOME=/home/ruddy/workspace/spark-2.4.3-bin-hadoop2.7
-#export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
 
 # ==========================================
 # 2. Oh My Zsh Config
 # ==========================================
 # Starship will likely take over the prompt, but we keep this as fallback
-ZSH_THEME="robbyrussell" 
-
+#ZSH_THEME="robbyrussell" 
+#
 plugins=(
-  git
-  zsh-syntax-highlighting
-  zsh-autosuggestions
-  archlinux
-  sudo
-)
+#  vi-mode # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode
+#  git # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git ; I never use the aliases
+  zsh-syntax-highlighting # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/zsh-syntax-highlighting
+  zsh-autosuggestions # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/zsh-autosuggestions
+  archlinux # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/archlinux
+  zoxide # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/zoxide
+  fzf # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/fzf
+  kitty # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kitty
+#  ssh # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ssh ; Not needed for now
+#  sudo # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/sudo ; Miss type
+#  gh # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/gh ; Works without it on Arch
+) 
 
 # ==========================================
 # 3. Tool Initialization
 # ==========================================
 
+# Aliases
+source $ALIAS_PATH
+
 # Oh My Zsh
 source $ZSH/oh-my-zsh.sh
-#
-# Zoxide (Better cd)
-eval "$(zoxide init zsh --cmd cd)"
-
-# FZF (Fuzzy Finder)
-source <(fzf --zsh)
 
 # Starship (Prompt)
-export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
 
-# Fastfetch (System Info)
-fastfetch
+eval "$(pass-cli completions zsh)"
 
 # OCaml
-eval $(opam env)
+#eval $(opam env)
 
 # NVM (Node Version Manager)
 export NVM_DIR="$HOME/.nvm"
@@ -112,3 +102,11 @@ fgd() {
         --multi \
         --bind 'enter:become:git add {+}'
 }
+
+
+
+# ==========================================
+# 5. Fastfetch (System Info)
+# ==========================================
+
+fastfetch
